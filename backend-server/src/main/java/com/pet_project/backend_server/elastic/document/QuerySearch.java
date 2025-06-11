@@ -1,7 +1,8 @@
 package com.pet_project.backend_server.elastic.document;
 
-import jakarta.persistence.Id;
+
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;

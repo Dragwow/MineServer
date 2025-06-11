@@ -73,7 +73,6 @@ public class OfferFacadeImpl implements OfferFacade {
     @Override
     @Cacheable(value = "offersCache",
             key = "#request.page + '-' + #request.size + '-' + #request.sort + '-' + #request.order")
-
     public DataTableResponse<OfferResponse> findAll(DataTableRequest request) {
         Page<Offer> page = offerService.findAll(request);
         DataTableResponse<OfferResponse> dataTableResponse = new DataTableResponse<>();

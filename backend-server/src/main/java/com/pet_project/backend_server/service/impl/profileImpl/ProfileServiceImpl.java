@@ -1,10 +1,6 @@
-package com.pet_project.backend_server.service.impl;
+package com.pet_project.backend_server.service.impl.profileImpl;
 
-import com.pet_project.backend_server.dto.request.offerRequest.OfferItemsRequest;
-import com.pet_project.backend_server.dto.request.offerRequest.OfferRequest;
 import com.pet_project.backend_server.dto.request.profileRequest.ProfileInformationRequest;
-import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequest;
-import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequestItem;
 import com.pet_project.backend_server.dto.response.*;
 import com.pet_project.backend_server.dto.response.languageResponse.ItLanguageResponse;
 import com.pet_project.backend_server.dto.response.languageResponse.LanguageResponse;
@@ -22,7 +18,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -98,7 +93,7 @@ public class ProfileServiceImpl implements ProfileService {
                 .map(dto -> {
                     ItLanguage language = new ItLanguage();
                     language.setUserProfile(userProfile);
-                    language.setLanguage(dto.getLanguage());
+                    language.setLanguageType(dto.getLanguage());
                     language.setLanguageLevel(dto.getLevel());
                     return language;
                 }).toList();

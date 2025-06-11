@@ -1,4 +1,4 @@
-package com.pet_project.backend_server.service.impl;
+package com.pet_project.backend_server.service.impl.authImpl;
 
 import com.pet_project.backend_server.dto.request.authRequest.AuthRequest;
 import com.pet_project.backend_server.dto.request.authRequest.RegRequest;
@@ -6,6 +6,8 @@ import com.pet_project.backend_server.dto.response.AuthResponse;
 import com.pet_project.backend_server.entity.user.RoleUser;
 import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.service.*;
+import com.pet_project.backend_server.service.AuthenticationService;
+import com.pet_project.backend_server.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
