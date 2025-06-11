@@ -1,7 +1,7 @@
 package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.entity.language.Language;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
+import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.repository.language.LanguageRepository;
 import com.pet_project.backend_server.service.LanguageService;
 import lombok.AllArgsConstructor;
@@ -21,22 +21,27 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public List<Language> getLanguageByUserProfileId(Long userProfileId) {
-        return languageRepository.findByUserProfileId(userProfileId);
+    public void updateLanguage(Language language){
+        languageRepository.save(language);
+    }
+
+    @Override
+    public List<Language> getLanguageByUserId(Long userId) {
+        return languageRepository.findByUserId(userId);
     }
 
     @Override
     public void deleteLanguage(Long languageId) {
-
+        languageRepository.deleteById(languageId);
     }
 
     @Override
-    public void deleteAllByUserProfileId(Long userProfileId) {
-
+    public void deleteAllByUserId(Long userId) {
+        languageRepository.deleteAllByUserId(userId);
     }
 
     @Override
-    public List<Language> findByUserProfile(UserProfile userProfile) {
-        return languageRepository.findByUserProfile(userProfile);
+    public List<Language> findByUser(User user) {
+        return languageRepository.findByUser(user);
     }
 }

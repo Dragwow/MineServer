@@ -5,6 +5,8 @@ import com.pet_project.backend_server.dto.response.DataTableResponse;
 import com.pet_project.backend_server.dto.response.ResponseContainer;
 import com.pet_project.backend_server.dto.response.offerResponse.OfferResponse;
 import com.pet_project.backend_server.elastic.document.OfferIndex;
+import com.pet_project.backend_server.entity.offer.OfferStatus;
+import com.pet_project.backend_server.entity.offer.OfferType;
 import com.pet_project.backend_server.facade.OfferFacade;
 import com.pet_project.backend_server.service.OfferSearchService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -24,7 +26,8 @@ import java.util.List;
 public class OffersPageController {
 
     private final OfferFacade offerFacade;
-    private final OfferSearchService offerSearchService;
+
+
     @GetMapping("/offers")
     public ResponseEntity<ResponseContainer<DataTableResponse<OfferResponse>>> findAllOffers(
             @RequestParam(defaultValue = "1") int page,
@@ -35,8 +38,4 @@ public class OffersPageController {
         return ResponseEntity.ok(new ResponseContainer<>(offerFacade.findAll(request)));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchByTitle(@RequestParam String title) {
-        return ResponseEntity.ok(new ResponseContainer<>(offerSearchService.searchByTitle(title)));
-    }
 }

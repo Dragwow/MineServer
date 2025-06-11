@@ -6,7 +6,6 @@ import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequestI
 import com.pet_project.backend_server.dto.response.DataTableResponse;
 import com.pet_project.backend_server.dto.response.projectResponse.ProjectResponse;
 import com.pet_project.backend_server.entity.project.Project;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
 import com.pet_project.backend_server.facade.ProjectFacade;
 import com.pet_project.backend_server.service.ProjectService;
 import com.pet_project.backend_server.service.UserService;
@@ -28,7 +27,6 @@ public class ProjectFacadeImpl implements ProjectFacade {
     public void create(ProjectRequest request){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.findByUsername(username);
-        UserProfile userProfile = user.getProfile();
 
         List<ProjectRequestItem> items = request.getProjects();
 
@@ -39,7 +37,7 @@ public class ProjectFacadeImpl implements ProjectFacade {
         List<Project> projects = items.stream()
                 .map(dto -> {
                     Project project = new Project();
-                    project.setUserProfile(userProfile);
+                    project.setUser(user);
                     project.setNameProject(dto.getNameProject());
                     project.setDescription(dto.getDescriptionProject());
                     project.setCreatedBy(username);
@@ -53,6 +51,27 @@ public class ProjectFacadeImpl implements ProjectFacade {
 
     @Override
     public void update(ProjectRequest request, Long id) {
+//        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//        var user = userService.findByUsername(username);
+//        UserProfile userProfile = user.getProfile();
+//
+//        List<ProjectRequestItem> items = request.getProjects();
+//
+//        if (items.isEmpty()){
+//            throw new IllegalArgumentException("Project must not be empty");
+//        }
+//
+//        for (ProjectRequestItem dto : items){
+//            if (dto.getId() == null){
+//                throw new IllegalArgumentException("Project ID must not be update");
+//            }
+//
+//            Project project = projectService.findById(dto.getId())
+//                    .orElseThrow(() -> new EntityNotFoundException(ExceptionUtil.ENTITY_NOT_FOUND + dto.getId()));
+//
+//            if (!project.getUserProfile().get)
+//        }
+
 
     }
 

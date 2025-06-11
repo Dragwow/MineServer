@@ -6,7 +6,6 @@ import com.pet_project.backend_server.dto.request.offerRequest.OfferRequest;
 import com.pet_project.backend_server.dto.response.DataTableResponse;
 import com.pet_project.backend_server.dto.response.offerResponse.OfferResponse;
 import com.pet_project.backend_server.entity.offer.Offer;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
 import com.pet_project.backend_server.facade.OfferFacade;
 import com.pet_project.backend_server.service.OfferService;
 import com.pet_project.backend_server.service.UserService;
@@ -31,7 +30,6 @@ public class OfferFacadeImpl implements OfferFacade {
     public void create(OfferRequest request){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.findByUsername(username);
-        UserProfile userProfile = user.getProfile();
 
         List<OfferItemsRequest> items = request.getOffers();
 
@@ -42,7 +40,7 @@ public class OfferFacadeImpl implements OfferFacade {
         List<Offer> offers = items.stream()
                 .map(dto-> {
                     Offer offer = new Offer();
-                    offer.setUserProfile(userProfile);
+                    offer.setUser(user);
                     offer.setCreatedBy(username);
                     offer.setTitle(dto.getTitle());
                     offer.setDescription(dto.getDescription());
@@ -73,7 +71,6 @@ public class OfferFacadeImpl implements OfferFacade {
     @Override
     @Cacheable(value = "offersCache",
             key = "#request.page + '-' + #request.size + '-' + #request.sort + '-' + #request.order")
-
     public DataTableResponse<OfferResponse> findAll(DataTableRequest request) {
         Page<Offer> page = offerService.findAll(request);
         DataTableResponse<OfferResponse> dataTableResponse = new DataTableResponse<>();

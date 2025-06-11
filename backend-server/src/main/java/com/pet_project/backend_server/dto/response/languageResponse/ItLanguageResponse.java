@@ -23,7 +23,7 @@ public class ItLanguageResponse {
 
     public ItLanguageResponse(ItLanguage itLanguage) {
 //        itLanguage.setLanguage(language);
-        this.language = itLanguage.getLanguage();
+        this.language = itLanguage.getLanguageType();
         this.level = itLanguage.getLanguageLevel();
     }
 

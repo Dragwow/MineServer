@@ -2,9 +2,8 @@
 
 services:
   db:
-    image: postgres:latest
-    container_name: postgres
-    restart: always
+    image: postgres:15
+    restart: unless-stopped
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
@@ -17,9 +16,8 @@ services:
       - backend
 
   redis:
-    image: redis:latest
-    container_name: redis_container
-    restart: always
+    image: redis:7
+    restart: unless-stopped
     ports:
       - "6379:6379"
     networks:
@@ -27,21 +25,21 @@ services:
 
 
   mongodb:
-    image: mongo
-    container_name: mongodb
+    image: mongo:6
     restart: unless-stopped
     ports:
       - "27017:27017"
     environment:
-          MONGO_INTIDB_DATABASE: mongodb
-          MONGO_INITDB_ROOT_USERNAME: admin
-          MONGO_INITDB_ROOT_PASSWORD: admin123
+          MONGO_INITDB_DATABASE: mongodb
+          MONGO_INITDB_ROOT_USERNAME: user
+          MONGO_INITDB_ROOT_PASSWORD: pass
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - backend
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.13.2
-    container_name: elastic
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -56,34 +54,12 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:8.13.2
-    container_name: kibana
     ports:
       - "5601:5601"
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
     depends_on:
       - elasticsearch
-    networks:
-      - backend
-
-  backend:
-    build: .
-    container_name: backend_server
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres_db
-      SPRING_DATASOURCE_USERNAME: user
-      SPRING_DATASOURCE_PASSWORD: pass
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      SPRING_DATA_MONGODB_URI: mongodb://admin:admin123@mongodb:27017/mongodb
-      JWT_SECRET: "+/bQMYnAxU4KhJbsYzgJxsxMiVkdDZMnC9Iv8G/nzM8="
-      SPRING_PROFILES_ACTIVE: dev
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-      - redis
-      - mongodb
     networks:
       - backend
 

@@ -1,7 +1,10 @@
 package com.pet_project.backend_server.entity.user;
 
 import com.pet_project.backend_server.entity.BaseEntity;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
+import com.pet_project.backend_server.entity.itLanguage.ItLanguage;
+import com.pet_project.backend_server.entity.language.Language;
+import com.pet_project.backend_server.entity.offer.Offer;
+import com.pet_project.backend_server.entity.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,6 +40,27 @@ public class User extends BaseEntity implements UserDetails {
 
     private int age;
 
+    private String avatarUrl;
+    private String bio;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Language> languages;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<ItLanguage> itLanguages;
+
+    private String gitHub;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Project> projects;
+
+    @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Offer> offers;
+
+    private boolean receiveEmailNotification;
+    private boolean receiveSMSNotification;
+
+    private boolean twoFactorEnabled;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RoleUser role;
@@ -66,9 +90,6 @@ public class User extends BaseEntity implements UserDetails {
         credentialsNonExpired = true;
         enabled = true;
     }
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserProfile profile;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities(){

@@ -1,14 +1,13 @@
 package com.pet_project.backend_server.config;
 
 import com.pet_project.backend_server.service.JwtService;
+import com.pet_project.backend_server.util.CookieUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,35 +32,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        String token = null;
 
-        if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(BEARER)) {
-            logger.info("Authorization header is missing or not in Bearer format.");
+        if(authHeader != null && authHeader.startsWith(BEARER)){
+            token = authHeader.substring(7);
+        }else {
+            token = CookieUtils.getCookieValue(request, "jwt");
+        }
+
+        if (token == null){
             filterChain.doFilter(request, response);
             return;
         }
 
-        final String token = authHeader.substring(BEARER.length()).trim();
-        final String username = jwtService.extractUsername(token);
+        String username = jwtService.extractUsername(token);
 
-        if (StringUtils.isNotBlank(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            try {
-                final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                if (userDetails != null && jwtService.isTokenValid(token, userDetails)) {
-                    final SecurityContext context = SecurityContextHolder.createEmptyContext();
-                    final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities()
-                    );
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    context.setAuthentication(authentication);
-                    SecurityContextHolder.setContext(context);
-                }
-            } catch (Exception e) {
-                logger.error("Error occurred while processing JWT token.", e);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if (jwtService.isTokenValid(token, userDetails)){
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         }
-
         filterChain.doFilter(request, response);
     }
+
 }

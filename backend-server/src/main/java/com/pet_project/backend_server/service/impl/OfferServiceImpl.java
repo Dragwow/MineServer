@@ -2,7 +2,7 @@ package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.dto.request.DataTableRequest;
 import com.pet_project.backend_server.entity.offer.Offer;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
+import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.repository.offer.OfferRepository;
 import com.pet_project.backend_server.service.OfferService;
 import lombok.AllArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -27,27 +28,27 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void update(Offer entity) {
-
+        offerRepository.save(entity);
     }
 
     @Override
     public void delete(Long id) {
-
+        offerRepository.deleteById(id);
     }
 
     @Override
-    public Offer findById(Long id) {
-        return null;
+    public Optional<Offer> findById(Long id) {
+        return offerRepository.findById(id);
     }
 
     @Override
-    public List<Offer> getOfferByUserProfileId(Long userProfileId) {
-        return offerRepository.findByUserProfileId(userProfileId);
+    public List<Offer> getOfferByUserId(Long userId) {
+        return offerRepository.findByUserId(userId);
     }
 
     @Override
-    public List<Offer> findByUserProfile(UserProfile userProfile) {
-        return offerRepository.findByUserProfile(userProfile);
+    public List<Offer> findByUser(User user) {
+        return offerRepository.findByUser(user);
     }
 
     @Override

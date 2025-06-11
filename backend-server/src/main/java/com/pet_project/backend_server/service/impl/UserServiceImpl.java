@@ -2,11 +2,9 @@ package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.dto.request.DataTableRequest;
 import com.pet_project.backend_server.entity.user.User;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
 import com.pet_project.backend_server.exception.EntityNotFoundException;
 import com.pet_project.backend_server.exception.NotValidDataException;
 import com.pet_project.backend_server.repository.user.UserRepository;
-import com.pet_project.backend_server.repository.userProfile.UserProfileRepository;
 import com.pet_project.backend_server.service.UserService;
 import com.pet_project.backend_server.util.ExceptionUtil;
 import com.pet_project.backend_server.util.ValidatorsUtil;
@@ -21,16 +19,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private final UserProfileRepository userProfileRepository;
 
     @Override
     public void create(User entity){
         checkCorrectUser(entity);
         userRepository.save(entity);
-
-        UserProfile profile = new UserProfile();
-        profile.setUser(entity);
-        userProfileRepository.save(profile);
     }
 
     @Override
@@ -43,12 +36,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id){
+    public Optional<User> findById(Long id){
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isEmpty()){
             throw new EntityNotFoundException(ExceptionUtil.ENTITY_NOT_FOUND);
         }
-        return optionalUser.get();
+        return optionalUser;
     }
 
     @Override
@@ -103,7 +96,4 @@ public class UserServiceImpl implements UserService {
             throw new NotValidDataException(ExceptionUtil.USER_PASSWORD_IS_NOT_PERCENT);
         }
     }
-
-
-
 }

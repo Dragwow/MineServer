@@ -6,6 +6,10 @@ import com.pet_project.backend_server.dto.response.AuthResponse;
 import com.pet_project.backend_server.entity.user.RoleUser;
 import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.service.*;
+import com.pet_project.backend_server.service.AuthenticationService;
+import com.pet_project.backend_server.service.JwtService;
+import com.pet_project.backend_server.util.CookieUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserDetailsService userDetailsService;
 
     @Override
-    public AuthResponse register(RegRequest regRequest) {
+    public AuthResponse register(RegRequest regRequest, HttpServletResponse response) {
         User user = new User();
         user.setUsername(regRequest.getUsername());
         user.setFirstName(regRequest.getFirstName());
@@ -34,19 +38,20 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setPassword(passwordEncoder.encode(regRequest.getPassword()));
         user.setRole(RoleUser.ROLE_USER);
         userService.create(user);
-        return getAuthResponse(user);
+        return getAuthResponse(user, response);
     }
 
     @Override
-    public AuthResponse authenticate(AuthRequest authRequest) {
+    public AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse response) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
         UserDetails userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
-        return getAuthResponse(userDetails);
+        return getAuthResponse(userDetails, response);
     }
 
-    private AuthResponse getAuthResponse(UserDetails userDetails) {
+    private AuthResponse getAuthResponse(UserDetails userDetails, HttpServletResponse response) {
         final String token = jwtService.generateToken(userDetails);
+        CookieUtils.addCookie(response, "jwt", token, 60 * 60 * 24);
         return new AuthResponse(token);
     }
 }

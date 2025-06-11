@@ -1,7 +1,7 @@
 package com.pet_project.backend_server.entity.project;
 
 import com.pet_project.backend_server.entity.BaseEntity;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
+import com.pet_project.backend_server.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,6 +26,6 @@ public class Project extends BaseEntity {
     private String linkGit;
 
     @ManyToOne
-    @JoinColumn(name = "user_profile_id", nullable = false)
-    private UserProfile userProfile;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

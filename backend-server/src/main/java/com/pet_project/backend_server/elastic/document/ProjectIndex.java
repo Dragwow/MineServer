@@ -1,41 +1,26 @@
 package com.pet_project.backend_server.elastic.document;
 
-import com.pet_project.backend_server.entity.offer.OfferStatus;
-import com.pet_project.backend_server.entity.offer.OfferType;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Getter
-@Setter
-@Document(indexName = "offer_index")
+@Data
+@Document(indexName = "project_index")
 @Builder(toBuilder = true)
-public class OfferIndex {
+public class ProjectIndex {
 
     @Id
-    private String offerId;
+    private String projectId;
 
     @Field(type = FieldType.Text)
-    private String title;
+    private String projectName;
 
     @Field(type = FieldType.Text)
     private String description;
 
     @Field(type = FieldType.Keyword)
     private String createdBy;
-
-    @Field(type = FieldType.Keyword)
-    private OfferStatus status;
-
-    @Field(type = FieldType.Keyword)
-    private OfferType type;
-
-    @Field(type = FieldType.Keyword)
-    private String userProfileId;
-
-
 }

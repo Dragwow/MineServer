@@ -7,8 +7,8 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableCaching
-@EnableElasticsearchRepositories
 @EnableScheduling
+@EnableElasticsearchRepositories
 @SpringBootApplication
 public class BackendServerApplication {
 

@@ -1,10 +1,6 @@
 package com.pet_project.backend_server.service.impl;
 
-import com.pet_project.backend_server.dto.request.offerRequest.OfferItemsRequest;
-import com.pet_project.backend_server.dto.request.offerRequest.OfferRequest;
 import com.pet_project.backend_server.dto.request.profileRequest.ProfileInformationRequest;
-import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequest;
-import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequestItem;
 import com.pet_project.backend_server.dto.response.*;
 import com.pet_project.backend_server.dto.response.languageResponse.ItLanguageResponse;
 import com.pet_project.backend_server.dto.response.languageResponse.LanguageResponse;
@@ -14,7 +10,6 @@ import com.pet_project.backend_server.entity.itLanguage.ItLanguage;
 import com.pet_project.backend_server.entity.language.Language;
 import com.pet_project.backend_server.entity.offer.Offer;
 import com.pet_project.backend_server.entity.project.Project;
-import com.pet_project.backend_server.entity.userProfile.UserProfile;
 import com.pet_project.backend_server.service.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -22,7 +17,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,7 +26,6 @@ import java.util.List;
 public class ProfileServiceImpl implements ProfileService {
 
     private final UserService userService;
-    private final UserProfileService userProfileService;
     private final ItLanguageService itLanguageService;
     private final LanguageService languageService;
     private final ProjectService projectService;
@@ -50,21 +43,20 @@ public class ProfileServiceImpl implements ProfileService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.findByUsername(username);
 
-        UserProfile userProfile = user.getProfile();
 
-        List<ItLanguage> itLanguages = itLanguageService.findByUserProfile(userProfile);
+        List<ItLanguage> itLanguages = itLanguageService.findByUser(user);
         List<ItLanguageResponse> itLanguageResponses = itLanguages.stream()
                 .map(ItLanguageResponse::new).toList();
 
-        List<Language> languages = languageService.findByUserProfile(userProfile);
+        List<Language> languages = languageService.findByUser(user);
         List<LanguageResponse> languageResponses = languages.stream()
                 .map(LanguageResponse::new).toList();
 
-        List<Project> projects = projectService.findByUserProfile(userProfile);
+        List<Project> projects = projectService.findByUser(user);
         List<ProjectResponse> projectResponses = projects.stream()
                 .map(ProjectResponse::new).toList();
 
-        List<Offer> offers = offerService.findByUserProfile(userProfile);
+        List<Offer> offers = offerService.findByUser(user);
         List<OfferResponse> offerResponses = offers.stream()
                 .map(OfferResponse::new).toList();
 
@@ -72,8 +64,8 @@ public class ProfileServiceImpl implements ProfileService {
                 .username(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .bio(userProfile.getBio())
-                .gitHub(userProfile.getGitHub())
+                .bio(user.getBio())
+                .gitHub(user.getGitHub())
                 .itLanguage(itLanguageResponses)
                 .language(languageResponses)
                 .projects(projectResponses)
@@ -86,19 +78,18 @@ public class ProfileServiceImpl implements ProfileService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.findByUsername(username);
 
-        UserProfile userProfile = user.getProfile();
-        userProfile.setBio(request.getBio());
-        userProfile.setGitHub(request.getGithub());
-        userProfileService.create(userProfile);
+        user.setBio(request.getBio());
+        user.setGitHub(request.getGithub());
+        userService.update(user);
 
-        itLanguageService.deleteAllByUserProfileId(userProfile.getId());
-        languageService.deleteAllByUserProfileId(userProfile.getId());
+        itLanguageService.deleteAllByUserId(user.getId());
+        languageService.deleteAllByUserId(user.getId());
 
         List<ItLanguage> itLanguages = request.getItLanguage().stream()
                 .map(dto -> {
                     ItLanguage language = new ItLanguage();
-                    language.setUserProfile(userProfile);
-                    language.setLanguage(dto.getLanguage());
+                    language.setUser(user);
+                    language.setLanguageType(dto.getLanguage());
                     language.setLanguageLevel(dto.getLevel());
                     return language;
                 }).toList();
@@ -107,7 +98,7 @@ public class ProfileServiceImpl implements ProfileService {
         List<Language> languages = request.getLanguage().stream()
                 .map(dto -> {
                     Language language = new Language();
-                    language.setUserProfile(userProfile);
+                    language.setUser(user);
                     language.setLanguageType(dto.getLanguage());
                     language.setLanguageLevel(dto.getLevel());
                     return language;

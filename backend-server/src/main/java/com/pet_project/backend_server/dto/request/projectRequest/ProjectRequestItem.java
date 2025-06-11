@@ -6,15 +6,15 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import static com.pet_project.backend_server.util.ValidatorsUtil.GITHUB_URL_REGEX;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class ProjectRequestItem {
+
+    private Long id;
 
     @NotNull(message = "can`t be null")
     @NotEmpty(message = "can`t be empty")
@@ -31,5 +31,6 @@ public class ProjectRequestItem {
     @Pattern(regexp = GITHUB_URL_REGEX, message = "Enter your GitHub link")
     @Schema(description = "Project link")
     private String linkGit;
+
 
 }
