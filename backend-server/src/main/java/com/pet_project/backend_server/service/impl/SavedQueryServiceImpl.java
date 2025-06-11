@@ -1,4 +1,4 @@
-package com.pet_project.backend_server.service.impl.searchImpl;
+package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.dto.request.DataTableRequest;
 import com.pet_project.backend_server.service.SavedQueryService;

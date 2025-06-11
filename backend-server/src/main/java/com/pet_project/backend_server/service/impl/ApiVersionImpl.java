@@ -1,4 +1,4 @@
-package com.pet_project.backend_server.service.impl.apiImpl;
+package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.entity.version.ApiVersion;
 import com.pet_project.backend_server.repository.version.ApiVersionRepository;

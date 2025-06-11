@@ -1,4 +1,4 @@
-package com.pet_project.backend_server.service.impl.authImpl;
+package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.service.JwtService;
