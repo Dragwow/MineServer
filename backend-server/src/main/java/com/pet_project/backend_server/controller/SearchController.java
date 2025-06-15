@@ -61,12 +61,12 @@ public class SearchController {
 
     @GetMapping("/firstNameProfile")
     public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByFirstName(@RequestParam String text) {
-        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByUsername(text)));
+        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByFirstName(text)));
     }
 
     @GetMapping("/lastNameProfile")
     public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByLastname(@RequestParam String text) {
-        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByUsername(text)));
+        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByLastName(text)));
     }
 
     @GetMapping("/nameProject")
