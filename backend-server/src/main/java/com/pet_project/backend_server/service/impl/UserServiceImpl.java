@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 @Service
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(User entity){
+        userRepository.save(entity);
     }
 
     @Override

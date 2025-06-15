@@ -22,7 +22,6 @@ public class ProjectResponse extends ApiResponse<Long> {
         @Schema(description = "Description")
         private String descriptionProject;
 
-
         @Schema(description = "CreatedBy")
         private String createdBy;
 

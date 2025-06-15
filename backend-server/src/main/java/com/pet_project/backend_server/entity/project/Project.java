@@ -3,13 +3,11 @@ package com.pet_project.backend_server.entity.project;
 import com.pet_project.backend_server.entity.BaseEntity;
 import com.pet_project.backend_server.entity.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "projects")
 public class Project extends BaseEntity {
@@ -20,7 +18,8 @@ public class Project extends BaseEntity {
     @Column(name = "created_at", columnDefinition = "timestamp(6)")
     private LocalDateTime createdAt;
 
-    private String updatedAt;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     private String createdBy;
     private String linkGit;

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void update(Project entity) {
-        projectRepository.save(entity);
+    public void update(Project entity){
+           projectRepository.save(entity);
     }
 
     @Override

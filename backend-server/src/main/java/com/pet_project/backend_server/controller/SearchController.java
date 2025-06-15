@@ -8,6 +8,7 @@ import com.pet_project.backend_server.entity.offer.OfferStatus;
 import com.pet_project.backend_server.entity.offer.OfferType;
 import com.pet_project.backend_server.service.OfferSearchService;
 import com.pet_project.backend_server.service.ProjectSearchService;
+import com.pet_project.backend_server.service.UserSearchService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -26,46 +27,47 @@ public class SearchController {
 
     private final OfferSearchService offerSearchService;
     private final ProjectSearchService projectSearchService;
+    private final UserSearchService userSearchService;
 
     @GetMapping("/statusOffer")
-    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchByStatus(@RequestParam OfferStatus status) {
+    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchOfferByStatus(@RequestParam OfferStatus status) {
         return ResponseEntity.ok(new ResponseContainer<>(offerSearchService.searchByStatus(status)));
     }
 
     @GetMapping("/typeOffer")
-    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchByType(@RequestParam OfferType type) {
+    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchOfferByType(@RequestParam OfferType type) {
         return ResponseEntity.ok(new ResponseContainer<>(offerSearchService.searchByType(type)));
     }
 
     @GetMapping("/titleOffer")
-    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchByTitle(@RequestParam String text) {
+    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchOfferByTitle(@RequestParam String text) {
         return ResponseEntity.ok(new ResponseContainer<>(offerSearchService.searchByTitle(text)));
     }
 
     @GetMapping("/descriptionOffer")
-    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchByDescription(@RequestParam String text) {
+    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchOfferByDescription(@RequestParam String text) {
         return ResponseEntity.ok(new ResponseContainer<>(offerSearchService.searchBYDescription(text)));
     }
 
     @GetMapping("/usernameOffer")
-    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchByUsername(@RequestParam String text) {
+    public ResponseEntity<ResponseContainer<List<OfferIndex>>> searchOfferByUsername(@RequestParam String text) {
         return ResponseEntity.ok(new ResponseContainer<>(offerSearchService.searchByUsername(text)));
     }
 
-//    @GetMapping("/usernameProfile")
-//    public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByUsername(@RequestParam String text) {
-//        return ResponseEntity.ok(new ResponseContainer<>(userProfileSearchService.searchProfileByUsername(text)));
-//    }
-//
-//    @GetMapping("/firstNameProfile")
-//    public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByFirstName(@RequestParam String text) {
-//        return ResponseEntity.ok(new ResponseContainer<>(userProfileSearchService.searchProfileByFirstName(text)));
-//    }
-//
-//    @GetMapping("/lastNameProfile")
-//    public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByLastname(@RequestParam String text) {
-//        return ResponseEntity.ok(new ResponseContainer<>(userProfileSearchService.searchProfileByLastName(text)));
-//    }
+    @GetMapping("/usernameProfile")
+    public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByUsername(@RequestParam String text) {
+        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByUsername(text)));
+    }
+
+    @GetMapping("/firstNameProfile")
+    public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByFirstName(@RequestParam String text) {
+        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByUsername(text)));
+    }
+
+    @GetMapping("/lastNameProfile")
+    public ResponseEntity<ResponseContainer<List<UserIndex>>> searchProfileByLastname(@RequestParam String text) {
+        return ResponseEntity.ok(new ResponseContainer<>(userSearchService.findByUsername(text)));
+    }
 
     @GetMapping("/nameProject")
     public ResponseEntity<ResponseContainer<List<ProjectIndex>>> searchByProjectName(@RequestParam String text) {

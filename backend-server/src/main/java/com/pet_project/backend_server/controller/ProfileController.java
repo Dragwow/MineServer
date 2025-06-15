@@ -3,6 +3,7 @@ package com.pet_project.backend_server.controller;
 import com.pet_project.backend_server.dto.request.offerRequest.OfferRequest;
 import com.pet_project.backend_server.dto.request.profileRequest.ProfileInformationRequest;
 import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequest;
+import com.pet_project.backend_server.dto.response.DataDeleteResponse;
 import com.pet_project.backend_server.dto.response.DataSavedResponse;
 import com.pet_project.backend_server.dto.response.ProfileResponse;
 import com.pet_project.backend_server.dto.response.ResponseContainer;
@@ -10,7 +11,6 @@ import com.pet_project.backend_server.facade.OfferFacade;
 import com.pet_project.backend_server.facade.ProjectFacade;
 import com.pet_project.backend_server.service.ProfileService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,5 +60,43 @@ public class ProfileController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseContainer<>(new DataSavedResponse()));
+    }
+
+    @PostMapping("/updateOffer")
+    public ResponseEntity<ResponseContainer<DataSavedResponse>> updateOffer(
+            @RequestBody
+            OfferRequest request,
+            Long id){
+        offerFacade.update(request, id);
+        return  ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseContainer<>(new DataSavedResponse()));
+    }
+
+    @PostMapping("/updateProject")
+    public ResponseEntity<ResponseContainer<DataSavedResponse>> updateProject(
+            @RequestBody
+            ProjectRequest request,
+            Long id){
+        projectFacade.update(request, id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseContainer<>(new DataSavedResponse()));
+    }
+
+    @PostMapping("/deleteOffer")
+    public ResponseEntity<ResponseContainer<DataDeleteResponse>> deleteOffer(
+            @RequestParam
+            Long id){
+        offerFacade.delete(id);
+        return ResponseEntity.ok(new ResponseContainer<>(new DataDeleteResponse()));
+    }
+
+    @PostMapping("/deleteProject")
+    public ResponseEntity<ResponseContainer<DataDeleteResponse>> deleteProject(
+            @RequestParam
+            Long id){
+        projectFacade.delete(id);
+        return ResponseEntity.ok(new ResponseContainer<>(new DataDeleteResponse()));
     }
 }
