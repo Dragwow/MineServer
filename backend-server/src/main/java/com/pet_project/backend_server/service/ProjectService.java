@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProjectService extends CrudService<Project> {
     List<Project> getProjectByUserId(Long userId);
     List<Project> findByUser(User user);
+    void deleteAllByUSerId(Long userId);
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProjectRepository extends BaseRepository<Project> {
     List<Project> findByUserId(Long userId);
-    void deleteByUserId(Long userId);
+    void deleteAllByUserId(Long userId);
     List<Project> findByUser(User user);
 
     @Query(value = "select distinct new com.pet_project.backend_server.repository.data.ProjectSearchDto(pv) from Project pv")

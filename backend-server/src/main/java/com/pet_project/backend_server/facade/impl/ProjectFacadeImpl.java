@@ -72,8 +72,8 @@ public class ProjectFacadeImpl implements ProjectFacade {
                 throw new IllegalArgumentException("Project ID must not be update");
             }
 
-            Project project = projectService.findById(dto.getId())
-                    .orElseThrow(() -> new EntityNotFoundException(ExceptionUtil.ENTITY_NOT_FOUND + dto.getId()));
+            Project project = projectService.findById(dto.getId());
+
 
             if (!project.getUser().getId().equals(user.getId())) {
                 throw new AccessDeniedException("You are not allowed to update to this project");

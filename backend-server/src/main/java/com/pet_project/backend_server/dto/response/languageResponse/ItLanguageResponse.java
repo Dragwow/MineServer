@@ -2,7 +2,7 @@ package com.pet_project.backend_server.dto.response.languageResponse;
 
 import com.pet_project.backend_server.entity.itLanguage.ItLanguage;
 import com.pet_project.backend_server.entity.itLanguage.LanguageLevel;
-import com.pet_project.backend_server.entity.itLanguage.ProgrammingLanguageType;
+import com.pet_project.backend_server.entity.itLanguage.ItLanguageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import lombok.Setter;
 public class ItLanguageResponse {
 
     @Schema(description = "Type")
-    private ProgrammingLanguageType language;
+    private ItLanguageType language;
 
     @Schema(description = "level")
     private LanguageLevel level;

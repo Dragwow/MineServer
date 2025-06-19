@@ -1,13 +1,11 @@
-package com.pet_project.backend_server.dto.response;
+package com.pet_project.backend_server.dto.response.profileResponse;
 
 import com.pet_project.backend_server.dto.response.languageResponse.ItLanguageResponse;
 import com.pet_project.backend_server.dto.response.languageResponse.LanguageResponse;
 import com.pet_project.backend_server.dto.response.offerResponse.OfferResponse;
 import com.pet_project.backend_server.dto.response.projectResponse.ProjectResponse;
-import com.pet_project.backend_server.entity.offer.Offer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pet_project.backend_server.dto.response;
+package com.pet_project.backend_server.dto.response.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

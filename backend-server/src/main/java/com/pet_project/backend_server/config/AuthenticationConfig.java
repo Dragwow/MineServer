@@ -40,12 +40,12 @@ public class AuthenticationConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/version/**").permitAll()
-                        .requestMatchers("/api/homePage/**").permitAll()
+                        .requestMatchers("/api/profile/**").permitAll()
                         .requestMatchers(
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
-                                "?swagger-resources/**").permitAll()
+                                "/swagger-resources/**").permitAll()
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())

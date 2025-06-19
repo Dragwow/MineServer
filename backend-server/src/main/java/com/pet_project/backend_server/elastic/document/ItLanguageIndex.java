@@ -1,7 +1,7 @@
 package com.pet_project.backend_server.elastic.document;
 
 import com.pet_project.backend_server.entity.itLanguage.LanguageLevel;
-import com.pet_project.backend_server.entity.itLanguage.ProgrammingLanguageType;
+import com.pet_project.backend_server.entity.itLanguage.ItLanguageType;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
@@ -23,5 +23,5 @@ public class ItLanguageIndex {
     private LanguageLevel languageLevel;
 
     @Field(type = FieldType.Keyword)
-    private ProgrammingLanguageType languageType;
+    private ItLanguageType languageType;
 }

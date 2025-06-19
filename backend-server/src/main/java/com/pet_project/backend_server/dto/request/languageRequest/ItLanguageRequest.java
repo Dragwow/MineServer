@@ -1,7 +1,7 @@
 package com.pet_project.backend_server.dto.request.languageRequest;
 
 import com.pet_project.backend_server.entity.itLanguage.LanguageLevel;
-import com.pet_project.backend_server.entity.itLanguage.ProgrammingLanguageType;
+import com.pet_project.backend_server.entity.itLanguage.ItLanguageType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ public class ItLanguageRequest {
 
     @NotNull
     @Schema(description = "Type")
-    private ProgrammingLanguageType language;
+    private ItLanguageType language;
 
     @NotNull
     @Schema(description = "level")

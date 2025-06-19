@@ -3,19 +3,20 @@ package com.pet_project.backend_server.controller;
 import com.pet_project.backend_server.dto.request.offerRequest.OfferRequest;
 import com.pet_project.backend_server.dto.request.profileRequest.ProfileInformationRequest;
 import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequest;
-import com.pet_project.backend_server.dto.response.DataDeleteResponse;
-import com.pet_project.backend_server.dto.response.DataSavedResponse;
-import com.pet_project.backend_server.dto.response.ProfileResponse;
+import com.pet_project.backend_server.dto.response.dataResponse.DataSavedResponse;
+import com.pet_project.backend_server.dto.response.profileResponse.ProfileResponse;
 import com.pet_project.backend_server.dto.response.ResponseContainer;
 import com.pet_project.backend_server.facade.OfferFacade;
 import com.pet_project.backend_server.facade.ProjectFacade;
-import com.pet_project.backend_server.service.ProfileService;
+import com.pet_project.backend_server.facade.ProfileFacade;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Tag(name = "Profile controller", description = "contains profile method")
 @RestController
@@ -24,22 +25,25 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class ProfileController {
 
-    private final ProfileService profileService;
+    private final ProfileFacade profileService;
     private final OfferFacade offerFacade;
     private final ProjectFacade projectFacade;
 
     @GetMapping("/userProfile")
-    public ResponseEntity<ResponseContainer<ProfileResponse>> getUserProfile() {
-        return ResponseEntity.ok(new ResponseContainer<>(profileService.getProfile()));
+    public ResponseEntity<ResponseContainer<ProfileResponse>> getUserProfile(
+            Principal principal
+    ) {
+        return ResponseEntity.ok(new ResponseContainer<>(profileService.getProfile(principal.getName())));
     }
 
     @PostMapping("/addInf")
     public ResponseEntity<ResponseContainer<DataSavedResponse>> addInf(
             @RequestBody
-            ProfileInformationRequest request) {
+            ProfileInformationRequest request,
+            Principal principal) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(new  ResponseContainer<>(profileService.addInformation(request)));
+                .body(new  ResponseContainer<>(profileService.addInformation(request, principal.getName())));
     }
 
     @PostMapping("/addProject")
@@ -84,19 +88,5 @@ public class ProfileController {
                 .body(new ResponseContainer<>(new DataSavedResponse()));
     }
 
-    @PostMapping("/deleteOffer")
-    public ResponseEntity<ResponseContainer<DataDeleteResponse>> deleteOffer(
-            @RequestParam
-            Long id){
-        offerFacade.delete(id);
-        return ResponseEntity.ok(new ResponseContainer<>(new DataDeleteResponse()));
-    }
 
-    @PostMapping("/deleteProject")
-    public ResponseEntity<ResponseContainer<DataDeleteResponse>> deleteProject(
-            @RequestParam
-            Long id){
-        projectFacade.delete(id);
-        return ResponseEntity.ok(new ResponseContainer<>(new DataDeleteResponse()));
-    }
 }

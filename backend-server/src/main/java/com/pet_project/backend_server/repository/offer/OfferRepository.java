@@ -13,7 +13,7 @@ import java.util.List;
 public interface OfferRepository extends BaseRepository<Offer> {
 
     List<Offer> findByUserId(Long userId);
-    void deleteByUserId(Long userProfileId);
+    void deleteAllByUserId(Long userProfileId);
     List<Offer> findByUser(User user);
 
     @Query(value = "select distinct new com.pet_project.backend_server.repository.data.OfferSearchDto(pv, pv.type) from Offer pv")

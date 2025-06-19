@@ -38,8 +38,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Optional<Project> findById(Long id) {
-        return projectRepository.findById(id);
+    public Project findById(Long id) {
+        return projectRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -59,5 +59,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Project> findByUser(User user) {
         return projectRepository.findByUser(user);
+    }
+
+    @Override
+    public void deleteAllByUSerId(Long userId) {
+        projectRepository.deleteAllByUserId(userId);
     }
 }

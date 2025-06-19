@@ -38,12 +38,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findById(Long id){
-        Optional<User> optionalUser = userRepository.findById(id);
-        if(optionalUser.isEmpty()){
-            throw new EntityNotFoundException(ExceptionUtil.ENTITY_NOT_FOUND);
-        }
-        return optionalUser;
+    public User findById(Long id){
+        return userRepository.findById(id).orElseThrow();
     }
 
     @Override

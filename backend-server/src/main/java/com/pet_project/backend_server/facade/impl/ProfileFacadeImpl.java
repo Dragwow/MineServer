@@ -1,20 +1,24 @@
-package com.pet_project.backend_server.service.impl;
+package com.pet_project.backend_server.facade.impl;
 
 import com.pet_project.backend_server.dto.request.profileRequest.ProfileInformationRequest;
-import com.pet_project.backend_server.dto.response.*;
+import com.pet_project.backend_server.dto.request.profileRequest.ProfileUpdateRequest;
+import com.pet_project.backend_server.dto.response.dataResponse.DataDeleteResponse;
+import com.pet_project.backend_server.dto.response.dataResponse.DataSavedResponse;
 import com.pet_project.backend_server.dto.response.languageResponse.ItLanguageResponse;
 import com.pet_project.backend_server.dto.response.languageResponse.LanguageResponse;
 import com.pet_project.backend_server.dto.response.offerResponse.OfferResponse;
+import com.pet_project.backend_server.dto.response.profileResponse.ProfileResponse;
 import com.pet_project.backend_server.dto.response.projectResponse.ProjectResponse;
 import com.pet_project.backend_server.entity.itLanguage.ItLanguage;
 import com.pet_project.backend_server.entity.language.Language;
 import com.pet_project.backend_server.entity.offer.Offer;
 import com.pet_project.backend_server.entity.project.Project;
+import com.pet_project.backend_server.entity.user.User;
+import com.pet_project.backend_server.facade.ProfileFacade;
 import com.pet_project.backend_server.service.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +27,7 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 
-public class ProfileServiceImpl implements ProfileService {
+public class ProfileFacadeImpl implements ProfileFacade {
 
     private final UserService userService;
     private final ItLanguageService itLanguageService;
@@ -38,11 +42,8 @@ public class ProfileServiceImpl implements ProfileService {
                     ".getContext()" +
                     ".getAuthentication()" +
                     ".getName()")
-    public ProfileResponse getProfile() {
-
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userService.findByUsername(username);
-
+    public ProfileResponse getProfile(String username) {
+        User user = userService.findByUsername(username);
 
         List<ItLanguage> itLanguages = itLanguageService.findByUser(user);
         List<ItLanguageResponse> itLanguageResponses = itLanguages.stream()
@@ -74,12 +75,12 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public DataSavedResponse addInformation(ProfileInformationRequest request) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        var user = userService.findByUsername(username);
+    public DataSavedResponse addInformation(ProfileInformationRequest request, String username) {
+        User user = userService.findByUsername(username);
 
         user.setBio(request.getBio());
         user.setGitHub(request.getGithub());
+
         userService.update(user);
 
         itLanguageService.deleteAllByUserId(user.getId());
@@ -107,5 +108,39 @@ public class ProfileServiceImpl implements ProfileService {
 
 
         return new DataSavedResponse();
+    }
+
+    @Override
+    public DataSavedResponse updateProfile(ProfileUpdateRequest request) {
+        User user = new User();
+
+        if (request.getFirstName() != null){
+            user.setFirstName(request.getFirstName());
+        }
+        if (request.getLastName() != null){
+            user.setLastName(request.getLastName());
+        }
+        if (request.getBio() != null){
+            user.setBio(request.getBio());
+        }
+        if (request.getGithub() != null){
+            user.setGitHub(request.getGithub());
+        }
+        userService.update(user);
+
+        return new DataSavedResponse();
+    }
+
+    @Override
+    public DataDeleteResponse deleteProfile(Long id) {
+        User user = userService.findById(id);
+        if (user.isCredentialsNonExpired()){
+            userService.delete(id);
+            projectService.deleteAllByUSerId(id);
+            offerService.deleteAllByUserId(id);
+            languageService.deleteAllByUserId(id);
+            itLanguageService.deleteAllByUserId(id);
+        }
+        return new DataDeleteResponse();
     }
 }
