@@ -18,7 +18,7 @@ public class ItLanguage extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "language_type")
-    private ProgrammingLanguageType languageType;
+    private ItLanguageType languageType;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "language_level")

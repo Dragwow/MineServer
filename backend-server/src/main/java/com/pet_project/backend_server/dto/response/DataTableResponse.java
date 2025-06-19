@@ -1,6 +1,7 @@
 package com.pet_project.backend_server.dto.response;
 
 import com.pet_project.backend_server.entity.BaseEntity;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
@@ -8,8 +9,7 @@ import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class DataTableResponse<RES extends ApiResponse> {
 
     private int page;

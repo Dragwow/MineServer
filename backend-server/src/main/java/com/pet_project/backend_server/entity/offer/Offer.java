@@ -5,9 +5,11 @@ import com.pet_project.backend_server.entity.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,7 +31,8 @@ public class Offer extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OfferType type;
 
-    @Column(name = "created_at", columnDefinition = "timestamp(6)")
+    @Column(name = "created_at",updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
@@ -39,4 +42,8 @@ public class Offer extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<OfferComments> offerComments;
+
 }

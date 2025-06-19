@@ -74,8 +74,8 @@ public class OfferFacadeImpl implements OfferFacade {
                 throw new IllegalArgumentException("offer ID must not be update");
             }
 
-            Offer offer = offerService.findById(dto.getId())
-                    .orElseThrow(() -> new EntityNotFoundException(ExceptionUtil.ENTITY_NOT_FOUND + dto.getId()));
+            Offer offer = offerService.findById(dto.getId());
+
 
             if (!offer.getUser().getId().equals(user.getId())) {
                 throw new AccessDeniedException("You are not allowed to update to this project");

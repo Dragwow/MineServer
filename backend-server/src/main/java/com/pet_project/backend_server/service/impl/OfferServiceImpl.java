@@ -37,8 +37,8 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public Optional<Offer> findById(Long id) {
-        return offerRepository.findById(id);
+    public Offer findById(Long id) {
+        return offerRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -58,5 +58,10 @@ public class OfferServiceImpl implements OfferService {
                 request.getSort());
         Pageable pageable = PageRequest.of(request.getPage() -1, request.getSize(), sort);
         return offerRepository.findAll(pageable);
+    }
+
+    @Override
+    public void deleteAllByUserId(Long userId){
+        offerRepository.deleteAllByUserId(userId);
     }
 }

@@ -2,7 +2,7 @@ package com.pet_project.backend_server.service.impl;
 
 import com.pet_project.backend_server.dto.request.authRequest.AuthRequest;
 import com.pet_project.backend_server.dto.request.authRequest.RegRequest;
-import com.pet_project.backend_server.dto.response.AuthResponse;
+import com.pet_project.backend_server.dto.response.auth.AuthResponse;
 import com.pet_project.backend_server.entity.user.RoleUser;
 import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.service.*;

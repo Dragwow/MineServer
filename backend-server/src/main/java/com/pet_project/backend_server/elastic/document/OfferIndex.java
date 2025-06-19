@@ -3,15 +3,13 @@ package com.pet_project.backend_server.elastic.document;
 import com.pet_project.backend_server.entity.offer.OfferStatus;
 import com.pet_project.backend_server.entity.offer.OfferType;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Getter
-@Setter
+@Data
 @Document(indexName = "offer_index")
 @Builder(toBuilder = true)
 public class OfferIndex {
