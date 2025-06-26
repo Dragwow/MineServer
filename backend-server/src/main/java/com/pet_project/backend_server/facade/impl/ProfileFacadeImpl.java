@@ -20,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class ProfileFacadeImpl implements ProfileFacade {
     private final LanguageService languageService;
     private final ProjectService projectService;
     private final OfferService offerService;
+    private final S3Service s3Service;
 
     @Override
     @Cacheable(
@@ -142,5 +144,15 @@ public class ProfileFacadeImpl implements ProfileFacade {
             itLanguageService.deleteAllByUserId(id);
         }
         return new DataDeleteResponse();
+    }
+
+    @Override
+    public String uploadAvatar(MultipartFile file, String username) {
+        User user = userService.findByUsername(username);
+        String avatarUrl = s3Service.uploadFile(file, username);
+
+        user.setAvatarUrl(avatarUrl);
+        userService.update(user);
+        return avatarUrl;
     }
 }

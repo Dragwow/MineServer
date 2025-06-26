@@ -5,6 +5,7 @@ import com.pet_project.backend_server.dto.request.profileRequest.ProfileUpdateRe
 import com.pet_project.backend_server.dto.response.dataResponse.DataDeleteResponse;
 import com.pet_project.backend_server.dto.response.dataResponse.DataSavedResponse;
 import com.pet_project.backend_server.dto.response.profileResponse.ProfileResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface ProfileFacade {
@@ -13,4 +14,5 @@ public interface ProfileFacade {
     DataSavedResponse addInformation(ProfileInformationRequest request, String username);
     DataSavedResponse updateProfile(ProfileUpdateRequest request);
     DataDeleteResponse deleteProfile(Long id);
+    String uploadAvatar(MultipartFile file, String username);
 }

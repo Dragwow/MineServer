@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 
@@ -25,28 +26,18 @@ import java.security.Principal;
 @Validated
 public class ProfileController {
 
-    private final ProfileFacade profileService;
+    private final ProfileFacade profileFacade;
     private final OfferFacade offerFacade;
     private final ProjectFacade projectFacade;
 
-    @GetMapping("/userProfile")
+    @GetMapping("/${username}")
     public ResponseEntity<ResponseContainer<ProfileResponse>> getUserProfile(
             Principal principal
     ) {
-        return ResponseEntity.ok(new ResponseContainer<>(profileService.getProfile(principal.getName())));
+        return ResponseEntity.ok(new ResponseContainer<>(profileFacade.getProfile(principal.getName())));
     }
 
-    @PostMapping("/addInf")
-    public ResponseEntity<ResponseContainer<DataSavedResponse>> addInf(
-            @RequestBody
-            ProfileInformationRequest request,
-            Principal principal) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new  ResponseContainer<>(profileService.addInformation(request, principal.getName())));
-    }
-
-    @PostMapping("/addProject")
+    @PostMapping("/add-project")
     public ResponseEntity<ResponseContainer<DataSavedResponse>> addProject(
             @RequestBody
             ProjectRequest request){
@@ -56,7 +47,7 @@ public class ProfileController {
                 .body(new ResponseContainer<>(new DataSavedResponse()));
     }
 
-    @PostMapping("/addOffer")
+    @PostMapping("/add-offer")
     public ResponseEntity<ResponseContainer<DataSavedResponse>> addOffer(
             @RequestBody
             OfferRequest request){
@@ -66,7 +57,7 @@ public class ProfileController {
                 .body(new ResponseContainer<>(new DataSavedResponse()));
     }
 
-    @PostMapping("/updateOffer")
+    @PostMapping("/update-offer")
     public ResponseEntity<ResponseContainer<DataSavedResponse>> updateOffer(
             @RequestBody
             OfferRequest request,
@@ -77,7 +68,7 @@ public class ProfileController {
                 .body(new ResponseContainer<>(new DataSavedResponse()));
     }
 
-    @PostMapping("/updateProject")
+    @PostMapping("/update-project")
     public ResponseEntity<ResponseContainer<DataSavedResponse>> updateProject(
             @RequestBody
             ProjectRequest request,
@@ -88,5 +79,15 @@ public class ProfileController {
                 .body(new ResponseContainer<>(new DataSavedResponse()));
     }
 
+    @PostMapping("/upload-avatar")
+    public ResponseEntity<ResponseContainer<String>> uploadAvatar(
+            @RequestParam("file")
+            MultipartFile file,
+            Principal principal){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseContainer<>(profileFacade.uploadAvatar(file, principal.getName())));
+
+    }
 
 }

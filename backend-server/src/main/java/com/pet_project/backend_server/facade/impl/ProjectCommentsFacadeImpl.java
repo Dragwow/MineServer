@@ -2,8 +2,6 @@ package com.pet_project.backend_server.facade.impl;
 
 import com.pet_project.backend_server.dto.request.comment.CommentsRequest;
 import com.pet_project.backend_server.dto.response.comment.CommentsResponse;
-import com.pet_project.backend_server.entity.offer.Offer;
-import com.pet_project.backend_server.entity.offer.OfferComments;
 import com.pet_project.backend_server.entity.project.Project;
 import com.pet_project.backend_server.entity.project.ProjectComment;
 import com.pet_project.backend_server.entity.user.User;

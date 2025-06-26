@@ -1,12 +1,14 @@
-package com.pet_project.backend_server.service;
+package com.pet_project.backend_server.facade;
 
 import com.pet_project.backend_server.dto.request.authRequest.AuthRequest;
 import com.pet_project.backend_server.dto.request.authRequest.RegRequest;
 import com.pet_project.backend_server.dto.response.auth.AuthResponse;
 import jakarta.servlet.http.HttpServletResponse;
 
-public interface AuthenticationService {
+public interface AuthenticationFacade {
 
-    AuthResponse register(RegRequest regRequest, HttpServletResponse response);
-    AuthResponse authenticate(AuthRequest authRequest, HttpServletResponse response);
+
+    AuthResponse authenticate(AuthRequest authRequest);
+    AuthResponse verifyOtpAndLogin(String email, String code, HttpServletResponse response);
+
 }

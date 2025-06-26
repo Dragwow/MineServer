@@ -82,7 +82,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "credentials_non_expired")
     private Boolean credentialsNonExpired;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UserComments> userComments;
 
     private Boolean enabled;

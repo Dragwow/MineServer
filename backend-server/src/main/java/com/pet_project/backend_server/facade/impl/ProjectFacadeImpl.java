@@ -6,11 +6,9 @@ import com.pet_project.backend_server.dto.request.projectRequest.ProjectRequestI
 import com.pet_project.backend_server.dto.response.DataTableResponse;
 import com.pet_project.backend_server.dto.response.projectResponse.ProjectResponse;
 import com.pet_project.backend_server.entity.project.Project;
-import com.pet_project.backend_server.exception.EntityNotFoundException;
 import com.pet_project.backend_server.facade.ProjectFacade;
 import com.pet_project.backend_server.service.ProjectService;
 import com.pet_project.backend_server.service.UserService;
-import com.pet_project.backend_server.util.ExceptionUtil;
 import lombok.AllArgsConstructor;
 
 import org.springframework.cache.annotation.Cacheable;

@@ -35,7 +35,6 @@ public class ChatFacadeImpl implements ChatFacade {
                 .builder()
                 .chats(chatDtoList)
                 .build();
-
     }
 
     @Override

@@ -36,4 +36,8 @@ public class RegRequest {
     @NotBlank(message = "Password can't be blank")
     @Schema(description = "Authentication field: password", example = "SecurePassword123!")
     private String password;
+
+    @NotBlank
+    @Schema(description = "Authentication field: password")
+    private String secondPassword;
 }

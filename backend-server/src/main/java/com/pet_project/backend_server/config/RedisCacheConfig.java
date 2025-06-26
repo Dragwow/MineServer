@@ -14,6 +14,8 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 public class RedisCacheConfig {
@@ -37,8 +39,30 @@ public class RedisCacheConfig {
                                 new GenericJackson2JsonRedisSerializer(objectMapper)
                         )
                 );
+
+        RedisCacheConfiguration otpConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(5))
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(
+                                new GenericJackson2JsonRedisSerializer(objectMapper)
+                        )
+                );
+
+        RedisCacheConfiguration tempUserConfig = RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(10))
+                .serializeValuesWith(
+                        RedisSerializationContext.SerializationPair.fromSerializer(
+                                new GenericJackson2JsonRedisSerializer(objectMapper)
+                        )
+                );
+
+        Map<String, RedisCacheConfiguration> cacheConfigurationMap = new HashMap<>();
+        cacheConfigurationMap.put("otpCache", otpConfig);
+        cacheConfigurationMap.put("tempUserCache", tempUserConfig);
+
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(config)
+                .withInitialCacheConfigurations(cacheConfigurationMap)
                 .build();
     }
 }

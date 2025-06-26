@@ -3,6 +3,7 @@ package com.pet_project.backend_server.service.impl;
 import com.pet_project.backend_server.dto.request.DataTableRequest;
 import com.pet_project.backend_server.entity.user.User;
 import com.pet_project.backend_server.exception.EntityNotFoundException;
+import com.pet_project.backend_server.exception.IncorrectPasswordException;
 import com.pet_project.backend_server.exception.NotValidDataException;
 import com.pet_project.backend_server.repository.user.UserRepository;
 import com.pet_project.backend_server.service.UserService;
@@ -54,6 +55,16 @@ public class UserServiceImpl implements UserService {
             throw new EntityNotFoundException(ExceptionUtil.ENTITY_NOT_FOUND);
         }
         return optionalUser.get();
+    }
+
+    @Override
+    public User resetPassword(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow();
     }
 
 

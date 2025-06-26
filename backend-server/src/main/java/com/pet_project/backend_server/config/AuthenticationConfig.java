@@ -39,6 +39,8 @@ public class AuthenticationConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/register/**").permitAll()
+                        .requestMatchers("/api/auth/login/**").permitAll()
                         .requestMatchers("/api/version/**").permitAll()
                         .requestMatchers("/api/profile/**").permitAll()
                         .requestMatchers(

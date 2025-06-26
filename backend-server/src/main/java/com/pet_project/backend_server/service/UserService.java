@@ -4,4 +4,7 @@ import com.pet_project.backend_server.entity.user.User;
 
 public interface UserService extends CrudService<User>{
     User findByUsername(String username);
+    User resetPassword(User user);
+    User findByEmail(String email);
+
 }
